@@ -224,8 +224,17 @@ shelly-spotserver
  elprisetjustnu.se
 ```
 
-Switching between modes requires only changing the API endpoint configuration.
+Switching between modes requires changing a single configuration variable in shelly-elpris-se:
 
+```javascript
+let shelly_api = ""; // Cloud mode (se.elpris.eu)
+
+For local mode:
+let shelly_api = "http://ip/script/id";
+```
+
+When shelly_api is empty, shelly-elpris-se uses the public se.elpris.eu API.<br>
+When shelly_api contains a Spot Server URL, all price requests are routed through the local Shelly Price Hub.
 
 ## Repository structure
 
