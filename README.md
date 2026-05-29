@@ -160,9 +160,43 @@ http://device-ip/script/id/
 http://device-ip/script/id/?r=ui
 ```
 
+### Response format
+
+The Spot Server returns datasets compatible with the se.elpris.eu API format.
+
+Standard 15-minute dataset example:
+
+```json
+{
+  "src": "Elprisetjustnu.se",
+  "via": "shelly-parser",
+  "z": "SE3",
+  "t0": "2026-05-27T00:00:00+02:00",
+  "s": 900,
+  "u": "SEK",
+  "raw": 96,
+  "p": [ ... ]
+}
+```
+
+Fields:
+
+| Field | Description                |
+| ----- | -------------------------- |
+| src   | Original data source       |
+| via   | Local parser identifier    |
+| z     | Price zone (SE1-SE4)       |
+| t0    | Dataset start timestamp    |
+| s     | Interval length in seconds |
+| u     | Price unit                 |
+| raw   | Number of source intervals |
+| p     | Price array                |
+
+This format was intentionally designed to remain compatible with the se.elpris.eu API while adding local metadata required for parser/server operation.
+
 ---
 
-## Integration with shelly-elprisSE
+## Integration with shelly-elpris-se
 
 shelly-elpris-se 3.2+ can operate in two modes:
 
