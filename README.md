@@ -21,7 +21,7 @@ This approach allows memory-intensive parsing to be isolated from client devices
 
 ## Why this project exists
 
-The original shelly-elprisSE architecture was designed to stay entirely within the Shelly ecosystem, without relying on external servers or databases.
+The original shelly-elpris-se architecture was designed to stay entirely within the Shelly ecosystem, without relying on external servers or databases.
 
 For Nordic price areas such as FI, EE, LV and LT, this approach works well because Elering provides compact CSV datasets that fit comfortably into Shelly memory.
 
