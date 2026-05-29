@@ -1,0 +1,10 @@
+# Local work files
+work/
+
+# Shelly temporary files
+*.log
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
