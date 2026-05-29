@@ -267,14 +267,14 @@ Separating the parser and server onto different devices prevents heavy JSON proc
 
 ## Startup sequence
 
-1. Start **shelly-spotserver.js**.
+1. Start [shelly-spotserver.js](shelly-spotserver.js).
 2. Note the URL shown in the server console:
 
    ```
    Parser s = http://<ip>/script/<id>/prices
    ```
-3. Configure this URL in **shelly-parser.js**.
-4. Start **shelly-parser.js**.
+3. Configure this URL in [shelly-parser.js](shelly-parser.js).
+4. Start [shelly-parser.js](shelly-parser.js).
 5. The parser and server will automatically exchange status messages and synchronize today's and tomorrow's price data.
 
 ## Parser console
