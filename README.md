@@ -129,7 +129,7 @@ Responsibilities:
 
 - DST-safe handling
 
-- Compatible with Shelly Gen2 / Gen3 devices
+- Compatible with Shelly Gen2 / Gen3 / Gen4 devices
 
 - Compatible with shelly-elprisSE 3.2+
 
@@ -164,12 +164,12 @@ http://device-ip/script/id/?r=ui
 
 ## Integration with shelly-elprisSE
 
-shelly-elprisSE 3.2+ can operate in two modes:
+shelly-elpris-se 3.2+ can operate in two modes:
 
 ### Cloud mode
 
 ```text
-shelly-elprisSE
+shelly-elpris-se
         │
         ▼
    se.elpris.eu
@@ -178,7 +178,7 @@ shelly-elprisSE
 ### Local mode
 
 ```text
-shelly-elprisSE
+shelly-elpris-se
         │
         ▼
 shelly-spotserver
@@ -192,7 +192,6 @@ shelly-spotserver
 
 Switching between modes requires only changing the API endpoint configuration.
 
----
 
 ## Repository structure
 
@@ -212,7 +211,6 @@ shelly-local-pricehub/
 └── README.md
 ```
 
----
 
 ## How it works
 
