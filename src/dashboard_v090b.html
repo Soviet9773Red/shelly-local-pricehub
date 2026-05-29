@@ -1,0 +1,183 @@
+<!-- v0.9.0b-->
+<!-- @license (c) Alexander - Soviet9773Red https://github.com/Soviet9773Red -->
+<!-- MIT License -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shelly price server</title>
+<style>
+body{font-family:monospace;background:#12121f;color:#d0d0e0;padding:16px;max-width:680px;margin:0 auto;font-size:13px}
+h2{color:#4fc3f7;margin:0 0 2px}
+h3{color:#81d4fa;margin:16px 0 4px;font-size:12px;text-transform:uppercase}
+table{width:100%;border-collapse:collapse;margin-bottom:4px}
+td,th{padding:4px 6px;border-bottom:1px solid #1e1e36;text-align:left}
+th{color:#7986cb;font-weight:normal;font-size:11px}
+.ok{color:#66bb6a}.err{color:#ef5350}.warn{color:#ffa726}.sub{color:#888}
+a{color:#4fc3f7;text-decoration:none}
+.api-row{margin:6px 0;font-size:13px}
+.api-lbl{color:#81d4fa;display:inline-block;width:72px}
+#err{color:#ef5350;font-size:12px;margin-top:8px}
+@media(max-width:520px){body{padding:8px;font-size:12px}td,th{padding:3px 4px}a{word-break:break-all}.api-lbl{width:60px}}
+</style>
+</head>
+<body>
+<h2 id="ttl">Shelly spotprice server &mdash; loading&hellip;</h2>
+<span class="sub" id="meta"></span>
+<div id="content"></div>
+<div id="err"></div>
+<div style='text-align:center;margin-top:12px'><span class='sub' id="ver"></span></div>
+
+<script>
+const tpN = ["data","out","cmd"]
+     ,evN = [
+  "Parser LOST","Reconnected","cmd 202","cmd 205",
+  "Rollover invalid","No rollover","Rollover OK",
+  "Stored today","Stored nextday","Day change","Cache reset"
+]
+     ,evC = ["err","ok","warn","warn","err","err","ok","ok","ok","ok","warn"];
+
+function p2(n){ return n<10?"0"+n:""+n; }
+
+function fmtT(ts){
+  if(!ts) return "-";
+  let d=new Date(ts*1e3);
+  return p2(d.getHours())+":"+p2(d.getMinutes())+":"+p2(d.getSeconds());
+}
+
+// Returns "MM-DD" string
+function fmtD(ts){
+  if(!ts) return "-";
+  let d=new Date(ts*1e3);
+  return p2(d.getMonth()+1)+"-"+p2(d.getDate());
+}
+
+// Returns "HH:MM" string
+function fmtHM(ts){
+  if(!ts) return "-";
+  let d=new Date(ts*1e3);
+  return p2(d.getHours())+":"+p2(d.getMinutes());
+}
+
+function fmtAgo(ts){
+  if(!ts) return "";
+  let s=Math.floor(Date.now()/1e3)-ts;
+  if(s<60) return s+"s ago";
+  return Math.floor(s/60)+"m ago";
+}
+
+function dayStr(offset){
+  let d=new Date(Date.now()+offset*864e5);
+  return d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate());
+}
+
+function render(d){
+  let pLost = d.ping[2]
+  ,pOK   = !pLost && d.ping[0]>0
+  ,tcOK  = d.td && d.td[2]
+  ,tmOK  = d.tm && d.tm[2]
+  ,td    = d.td ? d.td[0] : dayStr(0)
+  ,tm    = d.tm ? d.tm[0] : dayStr(1)
+  ,tcN   = d.td ? d.td[1] : 0
+  ,tmN   = d.tm ? d.tm[1] : 0
+  ,base  = window.location.origin+window.location.pathname;
+
+  document.getElementById("ttl").textContent =
+    "Shelly spotprice server \u2022 "+d.z;
+  document.getElementById("meta").textContent =
+    "Refresh 20s \u2022 "+fmtT(d.now)+
+    " \u2022 API: "+p2(d.api[0])+":"+p2(d.api[1]);
+  document.getElementById("ver").textContent = d.v;
+  document.getElementById("err").textContent="";
+  
+
+  let h="";
+
+  // ── Parser ──
+  h+="<h3>Parser</h3><table><tr><th>Last ping</th><th>Cache date</th><th>Status</th></tr><tr>";
+  h+="<td>"+fmtT(d.ping[0])+" <span class='sub'>"+fmtAgo(d.ping[0])+"</span></td>";
+  h+="<td>"+d.ping[1]+"</td>";
+  h+="<td class='"+(pOK?"ok":"err")+"'>"+(pOK?"OK":"LOST")+"</td>";
+  h+="</tr></table>";
+
+  // ── Server cache ──
+  let tcS=d.td?d.td[0]+" n="+d.td[1]:"\u2014"
+     ,tmS=d.tm?d.tm[0]+" n="+d.tm[1]:"\u2014"
+     ,tmCls=tmOK?"ok":(d.tm?"warn":"sub")
+     ,tmSt=tmOK?"OK":(d.tm?"invalid":"\u2014");
+  h+="<h3>Server cache</h3><table><tr><th>Slot</th><th>Date &amp; n</th><th>Status</th></tr>";
+  h+="<tr><td>Today</td><td>"+tcS+"</td><td class='"+(tcOK?"ok":"err")+"'>"+(tcOK?"OK":"missing")+"</td></tr>";
+  h+="<tr><td>Next day</td><td>"+tmS+"</td><td class='"+tmCls+"'>"+tmSt+"</td></tr>";
+  h+="</table>";
+
+  // ── Requests ──
+  h+="<h3>Requests</h3>";
+  if(!d.req||d.req.length===0){
+    h+="<span class='sub'>No events yet</span>";
+  } else {
+    h+="<table><tr><th>MM-DD</th><th>Time</th><th>Type</th><th>Detail</th><th>RC</th></tr>";
+    for(let i=d.req.length-1;i>=0;i--){
+      let e=d.req[i]; // [ts,tp,pd,n,rc]
+      let cls=(e[4]===200||e[4]===201)?"ok":(e[4]>=202&&e[4]<300)?"warn":"err";
+      let det=e[2];
+      if(e[1]===0&&e[3]) det+=" n="+e[3];
+      h+="<tr><td>"+fmtD(e[0])+"</td>";
+      h+="<td>"+fmtHM(e[0])+"</td>";
+      h+="<td>"+tpN[e[1]]+"</td>";
+      h+="<td>"+det+"</td>";
+      h+="<td class='"+cls+"'>"+e[4]+"</td></tr>";
+    }
+    h+="</table>";
+  }
+
+  // ── Events ──
+  h+="<h3>Events</h3>";
+  if(!d.ev||d.ev.length===0){
+    h+="<span class='sub'>No events yet</span>";
+  } else {
+    h+="<table><tr><th>MM-DD</th><th>Time</th><th>Event</th><th>Detail</th></tr>";
+    for(let i=d.ev.length-1;i>=0;i--){
+      let e=d.ev[i]; // [ts,ev,pd]
+      h+="<tr><td>"+fmtD(e[0])+"</td>";
+      h+="<td>"+fmtHM(e[0])+"</td>";
+      h+="<td class='"+evC[e[1]]+"'>"+evN[e[1]]+"</td>";
+      h+="<td class='sub'>"+e[2]+"</td></tr>";
+    }
+    h+="</table>";
+  }
+
+  // ── API links ──
+  let stdLblT  = "std"+(tcN||"")
+     ,stdLblTm = "std"+(tmN||"");
+  h+="<h3>API links</h3><div class='api-row'><span class='api-lbl'>TODAY:</span> ";
+  h+="<a href='?r=prices&d="+td+"'>&nbsp;&nbsp;"+stdLblT+"</a>";
+  h+=" &bull; <a href='?r=prices&d="+td+"&avg24'>avg24</a></div>";
+  h+="<div class='api-row'><span class='api-lbl'>NEXT&nbsp;DAY:</span> ";
+  h+="<a href='?r=prices&d="+tm+"'>&nbsp;&nbsp;"+stdLblTm+"</a>";
+  h+=" &bull; <a href='?r=prices&d="+tm+"&avg24'>avg24</a></div>";
+  h+="<div class='api-row' style='margin-top:10px'><span class='api-lbl sub'>shelly_api</span> ";
+  h+="<span class='ok'>&nbsp;&nbsp;\""+base+"\"</span></div>";
+  h+="<div style='margin-top:20px'><button onclick='resetCache()'>Reset cache</button></div>";
+
+  document.getElementById("content").innerHTML=h;
+}
+
+function load(){
+  fetch("?r=ui")
+    .then(function(r){ return r.json(); })
+    .then(function(d){ render(d); })
+    .catch(function(e){
+      document.getElementById("err").textContent="Fetch error: "+e;
+    });
+}
+
+load();
+function resetCache(){
+  fetch("?r=reset").then(function(){ load(); });
+}
+setInterval(load,2e4);
+</script>
+</body>
+</html>
