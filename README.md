@@ -239,17 +239,16 @@ When shelly_api contains a Spot Server URL, all price requests are routed throug
 ```text
 shelly-local-pricehub/
 
-├── parser/
-│   └── shelly-parser.js
-│
-├── server/
-│   └── shelly-spotserver.js
-│
-├── docs/
+├── shelly-parser.js
+├── shelly-spotserver.js
+├── README.md
+├── img/
 │   ├── architecture.png
 │   └── dashboard.png
-│
-└── README.md
+├── src/
+│   ├── shelly-parser-bld.js
+│   ├── shelly-spotserver-bld.js
+    └── dashboard_xxx.html
 ```
 
 
