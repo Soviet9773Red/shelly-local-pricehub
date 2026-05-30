@@ -27,7 +27,7 @@ For Nordic price areas such as FI, EE, LV and LT, this approach works well becau
 
 Swedish SE1-SE4 price data presents a different challenge.
 
-The 15-minute JSON datasets provided by elprisetjustnu.se are typically around 13-14 kB and cannot be processed using the traditional "download entire response and parse it" approach on Shelly devices.
+The 15-minute JSON datasets provided by [elprisetjustnu.se](https://www.elprisetjustnu.se/elpris-api) are typically around 13-14 kB and cannot be processed using the traditional "download entire response and parse it" approach on Shelly devices.
 
 To remain within the Shelly ecosystem, this project uses:
 
@@ -37,7 +37,7 @@ To remain within the Shelly ecosystem, this project uses:
 
 This architecture allows large Swedish price datasets to be processed without introducing external infrastructure such as Raspberry Pi, NAS servers or cloud services.
 
-The output format remains compatible with the se.elpris.eu API format, with additional metadata used for local distribution:
+The output format remains compatible with the [se.elpris.eu](https://se.elpris.eu) API format, with additional metadata used for local distribution:
 
 ```text
 {
@@ -47,7 +47,7 @@ The output format remains compatible with the se.elpris.eu API format, with addi
 }
 ```
 
-This allows existing Shelly scripts, including shelly-elpris-se, to use locally distributed price data without modifications.
+This allows existing Shelly scripts, including [shelly-elpris-se](https://github.com/Soviet9773Red/shelly-elpris-se), to use locally distributed price data without modifications.
 
 The result is a fully local energy-management solution built entirely on Shelly devices, without requiring Raspberry Pi, NAS systems, Docker hosts or dedicated servers.
 
@@ -166,7 +166,7 @@ The Spot Server returns datasets compatible with the se.elpris.eu API format.
 
 Standard 15-minute dataset example:
 
-```json
+```text
 {
   "src": "Elprisetjustnu.se",
   "via": "shelly-parser",
@@ -175,7 +175,7 @@ Standard 15-minute dataset example:
   "s": 900,
   "u": "SEK",
   "raw": 96,
-  "p": [ ... ]
+  "p": [[0.58146,..., 0.79293]
 }
 ```
 
