@@ -77,7 +77,7 @@ Shelly  API   Other
 Elpris Clients
 ```
 
----
+
 
 ## Components
 
@@ -111,7 +111,7 @@ Responsibilities:
 
 - Includes a built-in dashboard
 
----
+
 
 ## Features
 
@@ -133,7 +133,6 @@ Responsibilities:
 
 - Compatible with shelly-elprisSE 3.2+
 
----
 
 ## API
 
@@ -194,7 +193,6 @@ Fields:
 
 This format was intentionally designed to remain compatible with the se.elpris.eu API while adding local metadata required for parser/server operation.
 
----
 
 ## Integration with shelly-elpris-se
 
@@ -276,6 +274,18 @@ Separating the parser and server onto different devices prevents heavy JSON proc
 3. Configure this URL in [shelly-parser.js](shelly-parser.js).
 4. Start [shelly-parser.js](shelly-parser.js).
 5. The parser and server will automatically exchange status messages and synchronize today's and tomorrow's price data.
+
+### Synchronization timing
+
+The parser and server synchronize gradually after startup.
+
+* The parser contacts the server every 60 seconds.
+* The Server UI refreshes every 20 seconds.
+* Today and next-day datasets are transferred in separate stages.
+
+As a result, it may take approximately 2-3 minutes after startup before both today's and tomorrow's prices are fully available on the Spot Server.
+
+This behaviour is normal and indicates that the parser and server are exchanging and validating datasets.
 
 ## Parser console
 
