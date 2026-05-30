@@ -21,7 +21,7 @@ This approach allows memory-intensive parsing to be isolated from client devices
 
 ## Why this project exists
 
-The original shelly-elpris-se architecture was designed to stay entirely within the Shelly ecosystem, without relying on external servers or databases.
+The original [shelly-elpris-se](https://github.com/Soviet9773Red/shelly-elpris-se) architecture was designed to stay entirely within the Shelly ecosystem, without relying on external servers or databases.
 
 For Nordic price areas such as FI, EE, LV and LT, this approach works well because Elering provides compact CSV datasets that fit comfortably into Shelly memory.
 
@@ -131,7 +131,7 @@ Responsibilities:
 
 - Compatible with Shelly Gen2 / Gen3 / Gen4 devices
 
-- Compatible with shelly-elprisSE 3.2+
+- Compatible with shelly-elpris-se 3.2+
 
 
 ## API
@@ -174,7 +174,7 @@ Standard 15-minute dataset example:
   "s": 900,
   "u": "SEK",
   "raw": 96,
-  "p": [[0.58146,..., 0.79293]
+  "p": [0.58146,..., 0.79293]
 }
 ```
 
