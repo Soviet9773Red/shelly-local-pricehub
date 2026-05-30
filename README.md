@@ -245,9 +245,9 @@ shelly-local-pricehub/
 ├── img/
 │   ├── architecture.png
 │   └── dashboard.png
-├── src/
-│   ├── shelly-parser-bld.js
-│   ├── shelly-spotserver-bld.js
+└── src/
+    ├── shelly-parser-bld.js
+    ├── shelly-spotserver-bld.js
     └── dashboard_xxx.html
 ```
 
