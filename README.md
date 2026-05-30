@@ -196,7 +196,7 @@ This format was intentionally designed to remain compatible with the se.elpris.e
 
 ## Integration with shelly-elpris-se
 
-shelly-elpris-se 3.2+ can operate in two modes:
+[shelly-elpris-se](https://github.com/Soviet9773Red/shelly-elpris-se) 3.2+ can operate in two modes:
 
 ### Cloud mode
 
