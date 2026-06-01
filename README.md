@@ -286,6 +286,29 @@ As a result, it may take approximately 2-3 minutes after startup before both tod
 
 This behaviour is normal and indicates that the parser and server are exchanging and validating datasets.
 
+## Server console
+
+Example:
+
+```text
+Shelly spotprice server 0.9.0b | API time: 14:18
+Parser s =   http://192.168.8.162/script/4/prices
+Server UI:   http://192.168.8.162/script/4/
+[ping] waiting...
+[ping] parser=empty
+Stored today: 2026-05-29 (96)
+Stored nextday: 2026-05-30 (96)
+[ping] parser=2026-05-30
+```
+
+Meaning:
+
+* **parser=empty** - parser connected but has no cached prices yet.
+* **Stored today** - today's prices received and stored.
+* **Stored nextday** - tomorrow's prices received and stored.
+* **parser=YYYY-MM-DD** - parser reports which dataset is currently cached.
+
+
 ## Parser console
 
 Example:
@@ -312,28 +335,6 @@ Meaning:
 * **Cached** - price data successfully parsed and stored in parser memory.
 * **POST** - processed data successfully transferred to the server.
 
-## Server console
-
-Example:
-
-```text
-Shelly spotprice server 0.9.0b
-
-[ping] waiting...
-[ping] parser=empty
-
-Stored today: 2026-05-29 (96)
-Stored nextday: 2026-05-30 (96)
-
-[ping] parser=2026-05-30
-```
-
-Meaning:
-
-* **parser=empty** - parser connected but has no cached prices yet.
-* **Stored today** - today's prices received and stored.
-* **Stored nextday** - tomorrow's prices received and stored.
-* **parser=YYYY-MM-DD** - parser reports which dataset is currently cached.
 
 ## Server UI
 
