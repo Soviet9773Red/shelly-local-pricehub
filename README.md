@@ -1,13 +1,13 @@
-# shelly-local-pricehub
+# shelly-local-pricehub-se
 
-Local electricity price hub for Shelly devices.
+Local electricity price hub for Shelly devices and zones SE1-SE4.
 
 Fetch, cache, transform and distribute spot electricity prices inside your local network.
 
 
 ## Overview
 
-shelly-local-pricehub is a lightweight two-device architecture designed for Shelly devices.
+shelly-local-pricehub-se is a lightweight two-device architecture designed for Shelly devices and zones SE1-SE4.
 
 The system separates electricity price acquisition from price distribution:
 
@@ -237,7 +237,7 @@ When shelly_api contains a Spot Server URL, all price requests are routed throug
 ## Repository structure
 
 ```text
-shelly-local-pricehub/
+shelly-local-pricehub-se/
 
 ├── shelly-parser.js
 ├── shelly-spotserver.js
@@ -379,7 +379,7 @@ MIT License
 
 Your support does more than just buy me a coffee - it helps maintain and improve the infrastructure, documentation and open-source projects behind:
 
-* shelly-local-pricehub
+* shelly-local-pricehub-se
 * shelly-elpris-se
 * se.elpris.eu
 
